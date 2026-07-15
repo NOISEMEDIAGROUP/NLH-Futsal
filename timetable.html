@@ -38,6 +38,7 @@
     <div class="container text-center">
       <h1>Session Timetable</h1>
       <p style="color: rgba(255,255,255,0.85); font-size: 1.15rem; margin-top: 12px;">Every Monday evening in Aldenham. Five age groups, three hours of futsal.</p>
+      <p id="currentPrice" style="color: var(--yellow); font-weight: 700; font-size: 1.3rem; margin-top: 16px;"></p>
     </div>
   </section>
 
@@ -54,44 +55,50 @@
               <th>Day</th>
               <th>Time</th>
               <th>Location</th>
+              <th>Availability</th>
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="timetableBody">
             <tr>
               <td><span class="tag">Y1 -- Y3</span></td>
               <td>Monday</td>
               <td>6:00 -- 7:00 PM</td>
               <td>Aldenham</td>
-              <td><a href="book.html?session=y1-y3" class="btn btn--primary">Book</a></td>
+              <td><span id="avail-y1-y3" class="avail-badge">Loading...</span></td>
+              <td><a id="book-y1-y3" href="book.html?session=y1-y3" class="btn btn--primary">Book</a></td>
             </tr>
             <tr>
               <td><span class="tag">Y4 -- Y5</span></td>
               <td>Monday</td>
               <td>6:00 -- 7:00 PM</td>
               <td>Aldenham</td>
-              <td><a href="book.html?session=y4-y5" class="btn btn--primary">Book</a></td>
+              <td><span id="avail-y4-y5" class="avail-badge">Loading...</span></td>
+              <td><a id="book-y4-y5" href="book.html?session=y4-y5" class="btn btn--primary">Book</a></td>
             </tr>
             <tr>
               <td><span class="tag">Y6 -- Y7</span></td>
               <td>Monday</td>
               <td>7:00 -- 8:00 PM</td>
               <td>Aldenham</td>
-              <td><a href="book.html?session=y6-y7" class="btn btn--primary">Book</a></td>
+              <td><span id="avail-y6-y7" class="avail-badge">Loading...</span></td>
+              <td><a id="book-y6-y7" href="book.html?session=y6-y7" class="btn btn--primary">Book</a></td>
             </tr>
             <tr>
               <td><span class="tag">Y8</span></td>
               <td>Monday</td>
               <td>7:00 -- 8:00 PM</td>
               <td>Aldenham</td>
-              <td><a href="book.html?session=y8" class="btn btn--primary">Book</a></td>
+              <td><span id="avail-y8" class="avail-badge">Loading...</span></td>
+              <td><a id="book-y8" href="book.html?session=y8" class="btn btn--primary">Book</a></td>
             </tr>
             <tr>
               <td><span class="tag">Y9 -- Y10</span></td>
               <td>Monday</td>
               <td>8:00 -- 9:00 PM</td>
               <td>Aldenham</td>
-              <td><a href="book.html?session=y9-y10" class="btn btn--primary">Book</a></td>
+              <td><span id="avail-y9-y10" class="avail-badge">Loading...</span></td>
+              <td><a id="book-y9-y10" href="book.html?session=y9-y10" class="btn btn--primary">Book</a></td>
             </tr>
           </tbody>
         </table>

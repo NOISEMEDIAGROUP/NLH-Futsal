@@ -2,36 +2,7 @@
    HAWKS FUTSAL - Main JavaScript
    =================================== */
 
-// -------------------------------------------------------
-// CONFIG: Replace these with your actual Stripe Payment Links
-// Create products in your Stripe Dashboard, generate
-// Payment Links, and paste the URLs here.
-// -------------------------------------------------------
-const STRIPE_PAYMENT_LINKS = {
-  'y1-y3': 'https://buy.stripe.com/YOUR_LINK_Y1_Y3',
-  'y4-y5': 'https://buy.stripe.com/YOUR_LINK_Y4_Y5',
-  'y6-y7': 'https://buy.stripe.com/YOUR_LINK_Y6_Y7',
-  'y8':    'https://buy.stripe.com/YOUR_LINK_Y8',
-  'y9-y10':'https://buy.stripe.com/YOUR_LINK_Y9_Y10',
-};
-
-// -------------------------------------------------------
-// CONFIG: Replace with your Formspree form ID
-// Sign up free at https://formspree.io and create a form.
-// -------------------------------------------------------
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
-
-// -------------------------------------------------------
-// Session display data
-// -------------------------------------------------------
-const SESSION_INFO = {
-  'y1-y3':  { label: 'Y1 -- Y3',   time: '6:00 -- 7:00 PM' },
-  'y4-y5':  { label: 'Y4 -- Y5',   time: '6:00 -- 7:00 PM' },
-  'y6-y7':  { label: 'Y6 -- Y7',   time: '7:00 -- 8:00 PM' },
-  'y8':     { label: 'Y8',         time: '7:00 -- 8:00 PM' },
-  'y9-y10': { label: 'Y9 -- Y10',  time: '8:00 -- 9:00 PM' },
-};
-
+const API_BASE = '/api';
 
 // -------------------------------------------------------
 // Mobile Navigation Toggle
@@ -46,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
       links.classList.toggle('open');
     });
 
-    // Close menu when a link is clicked
     links.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         toggle.classList.remove('open');
@@ -56,20 +26,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------------------------------------------------------
-  // Booking page: Pre-select session from URL parameter
+  // Timetable page: load availability for all sessions
+  // -------------------------------------------------------
+  if (document.getElementById('timetableBody')) {
+    loadTimetableAvailability();
+  }
+
+  // -------------------------------------------------------
+  // Booking page
   // -------------------------------------------------------
   const sessionSelect = document.getElementById('session');
   if (sessionSelect) {
+    // Handle success/cancel returns from Stripe
     const params = new URLSearchParams(window.location.search);
-    const preselected = params.get('session');
-    if (preselected && SESSION_INFO[preselected]) {
-      sessionSelect.value = preselected;
-      updateBookingSummary(preselected);
+
+    if (params.get('success') === 'true') {
+      showBookingMessage('success', 'Booking confirmed! Check your email for a confirmation with all the details.');
     }
 
-    // Update sidebar summary when session changes
+    if (params.get('cancelled') === 'true') {
+      showBookingMessage('cancelled', 'Payment was cancelled. Your spot has not been booked. You can try again below.');
+    }
+
+    // Pre-select session from URL param
+    const preselected = params.get('session');
+    if (preselected) {
+      sessionSelect.value = preselected;
+      loadSessionAvailability(preselected);
+    }
+
+    // Update sidebar + check availability when session changes
     sessionSelect.addEventListener('change', (e) => {
-      updateBookingSummary(e.target.value);
+      loadSessionAvailability(e.target.value);
     });
   }
 
@@ -81,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Validate required fields
       if (!form.checkValidity()) {
-        // Show native validation messages
         form.reportValidity();
         return;
       }
@@ -94,39 +80,48 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Collect form data
-      const formData = new FormData(form);
       const submitBtn = form.querySelector('button[type="submit"]');
       const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Processing...';
+      submitBtn.textContent = 'Checking availability...';
       submitBtn.disabled = true;
 
       try {
-        // Submit registration details to Formspree
-        const response = await fetch(FORMSPREE_ENDPOINT, {
+        const response = await fetch(`${API_BASE}/create-checkout`, {
           method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' },
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            session: session,
+            playerName: document.getElementById('playerName').value,
+            playerDob: document.getElementById('playerDob').value,
+            parentName: document.getElementById('parentName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            medical: document.getElementById('medical').value,
+            emailConsent: document.querySelector('input[name="email_consent"]:checked')?.value || 'no',
+            photoConsent: document.querySelector('input[name="photo_consent"]:checked')?.value || 'no',
+          }),
         });
 
-        if (!response.ok) {
-          throw new Error('Form submission failed');
+        const data = await response.json();
+
+        if (response.status === 409) {
+          // Session is full
+          alert(data.message || 'This session is now full.');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          return;
         }
 
-        // Redirect to Stripe Payment Link
-        const paymentLink = STRIPE_PAYMENT_LINKS[session];
-        if (paymentLink && !paymentLink.includes('YOUR_LINK')) {
-          window.location.href = paymentLink;
-        } else {
-          // Fallback: show success if Stripe links aren't configured yet
-          alert('Registration submitted successfully! Payment links are being set up -- the club will be in touch with payment details.');
-          form.reset();
-          updateBookingSummary('');
+        if (!response.ok) {
+          throw new Error(data.error || 'Something went wrong');
         }
+
+        // Redirect to Stripe Checkout
+        window.location.href = data.url;
+
       } catch (error) {
-        console.error('Submission error:', error);
+        console.error('Checkout error:', error);
         alert('Something went wrong. Please try again or contact us directly.');
-      } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
       }
@@ -136,19 +131,108 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // -------------------------------------------------------
-// Update booking summary sidebar
+// Load availability for a single session (booking page)
 // -------------------------------------------------------
-function updateBookingSummary(sessionKey) {
+async function loadSessionAvailability(sessionKey) {
   const summarySession = document.getElementById('summarySession');
   const summaryTime = document.getElementById('summaryTime');
+  const summaryPrice = document.getElementById('summaryPrice');
+  const summarySpots = document.getElementById('summarySpots');
+  const submitBtn = document.querySelector('#bookingForm button[type="submit"]');
 
-  if (!summarySession || !summaryTime) return;
+  if (!sessionKey) {
+    if (summarySession) summarySession.textContent = '--';
+    if (summaryTime) summaryTime.textContent = '--';
+    if (summaryPrice) summaryPrice.textContent = '--';
+    if (summarySpots) summarySpots.textContent = '--';
+    return;
+  }
 
-  if (sessionKey && SESSION_INFO[sessionKey]) {
-    summarySession.textContent = SESSION_INFO[sessionKey].label;
-    summaryTime.textContent = SESSION_INFO[sessionKey].time;
-  } else {
-    summarySession.textContent = '--';
-    summaryTime.textContent = '--';
+  try {
+    const res = await fetch(`${API_BASE}/check-availability?session=${sessionKey}`);
+    const data = await res.json();
+
+    if (summarySession) summarySession.textContent = data.label;
+    if (summaryTime) summaryTime.textContent = data.time;
+    if (summaryPrice) summaryPrice.textContent = data.price.formatted;
+    if (summarySpots) {
+      if (data.available) {
+        summarySpots.textContent = `${data.spotsLeft} spots left`;
+        summarySpots.style.color = data.spotsLeft <= 3 ? '#e53e3e' : '#38a169';
+      } else {
+        summarySpots.textContent = 'FULL';
+        summarySpots.style.color = '#e53e3e';
+      }
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = !data.available;
+      submitBtn.textContent = data.available ? `Pay ${data.price.formatted}` : 'Session Full';
+    }
+
+  } catch (err) {
+    console.error('Failed to load availability:', err);
+  }
+}
+
+
+// -------------------------------------------------------
+// Load availability for all sessions (timetable page)
+// -------------------------------------------------------
+async function loadTimetableAvailability() {
+  try {
+    const res = await fetch(`${API_BASE}/check-availability`);
+    const data = await res.json();
+
+    // Update price display
+    const priceDisplay = document.getElementById('currentPrice');
+    if (priceDisplay && data.price) {
+      priceDisplay.textContent = `${data.price.formatted} - ${data.price.label}`;
+    }
+
+    // Update each session row
+    for (const [key, session] of Object.entries(data.sessions)) {
+      const badge = document.getElementById(`avail-${key}`);
+      if (badge) {
+        if (session.available) {
+          badge.textContent = `${session.spotsLeft} spots`;
+          badge.className = 'avail-badge avail-badge--open';
+          if (session.spotsLeft <= 3) {
+            badge.className = 'avail-badge avail-badge--low';
+          }
+        } else {
+          badge.textContent = 'FULL';
+          badge.className = 'avail-badge avail-badge--full';
+        }
+      }
+
+      // Disable book button if full
+      const bookBtn = document.getElementById(`book-${key}`);
+      if (bookBtn && !session.available) {
+        bookBtn.textContent = 'Full';
+        bookBtn.className = 'btn btn--disabled';
+        bookBtn.removeAttribute('href');
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load timetable availability:', err);
+  }
+}
+
+
+// -------------------------------------------------------
+// Show booking status message
+// -------------------------------------------------------
+function showBookingMessage(type, message) {
+  const form = document.getElementById('bookingForm');
+  if (!form) return;
+
+  const banner = document.createElement('div');
+  banner.className = `booking-banner booking-banner--${type}`;
+  banner.innerHTML = `<p>${message}</p>`;
+  form.parentNode.insertBefore(banner, form);
+
+  if (type === 'success') {
+    form.style.display = 'none';
   }
 }
