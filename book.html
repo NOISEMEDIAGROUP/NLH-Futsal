@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Session - NLH Futsal Academy</title>
+  <meta name="description" content="Sign up and pay for your futsal session at North London Hawks. Secure online payment through Stripe.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="index.html" class="nav__logo">
+        <img src="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png" alt="North London Hawks logo">
+        <span>NLH Futsal</span>
+      </a>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="book.html" class="nav__cta active">Book a Session</a>
+      </div>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="section section--purple" style="padding: 60px 0 48px;">
+    <div class="container text-center">
+      <h1>Book &amp; Pay</h1>
+      <p style="color: rgba(255,255,255,0.85); font-size: 1.15rem; margin-top: 12px;">Fill in your details, pick your session, and pay securely through Stripe.</p>
+    </div>
+  </section>
+
+  <!-- Booking Form -->
+  <section class="section">
+    <div class="container">
+      <div class="booking-layout">
+
+        <!-- Form -->
+        <form class="form" id="bookingForm" novalidate>
+
+          <h3 class="mb-24">Player Details</h3>
+
+          <div class="form__group">
+            <label class="form__label" for="playerName">Player's Name <span class="required">*</span></label>
+            <input type="text" class="form__input" id="playerName" name="player_name" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="playerDob">Player's Date of Birth <span class="required">*</span></label>
+            <input type="date" class="form__input" id="playerDob" name="player_dob" required>
+          </div>
+
+          <hr class="form__divider">
+          <h3 class="mb-24">Parent / Guardian Details</h3>
+
+          <div class="form__group">
+            <label class="form__label" for="parentName">Parent's Name <span class="required">*</span></label>
+            <input type="text" class="form__input" id="parentName" name="parent_name" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="email">Email <span class="required">*</span></label>
+            <input type="email" class="form__input" id="email" name="email" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="phone">Phone <span class="required">*</span></label>
+            <input type="tel" class="form__input" id="phone" name="phone" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="medical">Medical Information</label>
+            <textarea class="form__textarea" id="medical" name="medical" placeholder="Any allergies, conditions, or information the coaches should know about."></textarea>
+          </div>
+
+          <hr class="form__divider">
+          <h3 class="mb-24">Session Selection</h3>
+
+          <div class="form__group">
+            <label class="form__label" for="session">Choose a Session <span class="required">*</span></label>
+            <select class="form__select" id="session" name="session" required>
+              <option value="">-- Select a session --</option>
+              <option value="y1-y3">Monday Y1 -- Y3 &nbsp; 6:00 -- 7:00 PM (Aldenham)</option>
+              <option value="y4-y5">Monday Y4 -- Y5 &nbsp; 6:00 -- 7:00 PM (Aldenham)</option>
+              <option value="y6-y7">Monday Y6 -- Y7 &nbsp; 7:00 -- 8:00 PM (Aldenham)</option>
+              <option value="y8">Monday Y8 &nbsp; 7:00 -- 8:00 PM (Aldenham)</option>
+              <option value="y9-y10">Monday Y9 -- Y10 &nbsp; 8:00 -- 9:00 PM (Aldenham)</option>
+            </select>
+          </div>
+
+          <hr class="form__divider">
+          <h3 class="mb-24">Consent</h3>
+
+          <div class="form__group">
+            <label class="form__label">Receive emails about our sports programmes? <span class="required">*</span></label>
+            <div class="form__radio-group">
+              <label class="form__radio">
+                <input type="radio" name="email_consent" value="yes" required> Yes
+              </label>
+              <label class="form__radio">
+                <input type="radio" name="email_consent" value="no"> No
+              </label>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">Permission for photos/videos to be used by the club on social media, the website, or promotional material? <span class="required">*</span></label>
+            <div class="form__radio-group">
+              <label class="form__radio">
+                <input type="radio" name="photo_consent" value="yes" required> Yes
+              </label>
+              <label class="form__radio">
+                <input type="radio" name="photo_consent" value="no"> No
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--large btn--full mt-32">
+            Continue to Payment
+          </button>
+
+        </form>
+
+        <!-- Sidebar -->
+        <div class="booking-sidebar">
+          <div class="booking-summary">
+            <h3>Your Booking</h3>
+            <div class="booking-summary__item">
+              <span class="booking-summary__label">Session</span>
+              <span id="summarySession">--</span>
+            </div>
+            <div class="booking-summary__item">
+              <span class="booking-summary__label">Day</span>
+              <span>Monday</span>
+            </div>
+            <div class="booking-summary__item">
+              <span class="booking-summary__label">Time</span>
+              <span id="summaryTime">--</span>
+            </div>
+            <div class="booking-summary__item">
+              <span class="booking-summary__label">Location</span>
+              <span>Aldenham</span>
+            </div>
+          </div>
+
+          <div class="booking-info">
+            <h4>How payment works</h4>
+            <p>After submitting this form, you'll be redirected to Stripe's secure payment page to complete your booking. You'll receive a confirmation email once payment is processed.</p>
+            <p class="mt-16">Questions? <a href="https://www.northlondonhawks.co.uk/contact" target="_blank" rel="noopener" style="color: var(--purple-deep); font-weight: 600;">Contact us</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">
+            <img src="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png" alt="North London Hawks logo">
+            <span>North London Hawks Futsal</span>
+          </div>
+          <p>Professional futsal coaching for boys and girls aged 5+. Based in Aldenham, serving families across North London.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <div class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="timetable.html">Timetable</a>
+            <a href="book.html">Book a Session</a>
+            <a href="https://www.northlondonhawks.co.uk" target="_blank" rel="noopener">Main Club Site</a>
+          </div>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <div class="footer__links">
+            <a href="https://www.northlondonhawks.co.uk/contact" target="_blank" rel="noopener">Get in Touch</a>
+            <a href="https://www.northlondonhawks.co.uk" target="_blank" rel="noopener">northlondonhawks.co.uk</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2025 North London Hawks. All rights reserved.</span>
+        <div class="footer__socials">
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="Twitter">X</a>
+          <a href="#" aria-label="LinkedIn">Li</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

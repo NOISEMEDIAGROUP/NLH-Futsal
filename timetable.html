@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timetable - NLH Futsal Academy</title>
+  <meta name="description" content="Monday evening futsal sessions in Aldenham for ages Y1 through Y10. View times and book your slot.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="index.html" class="nav__logo">
+        <img src="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png" alt="North London Hawks logo">
+        <span>NLH Futsal</span>
+      </a>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="timetable.html" class="active">Timetable</a>
+        <a href="book.html" class="nav__cta">Book a Session</a>
+      </div>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="section section--purple" style="padding: 60px 0 48px;">
+    <div class="container text-center">
+      <h1>Session Timetable</h1>
+      <p style="color: rgba(255,255,255,0.85); font-size: 1.15rem; margin-top: 12px;">Every Monday evening in Aldenham. Five age groups, three hours of futsal.</p>
+    </div>
+  </section>
+
+  <!-- Timetable -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Desktop Table -->
+      <div class="timetable-table">
+        <table class="timetable">
+          <thead>
+            <tr>
+              <th>Age Group</th>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Location</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag">Y1 -- Y3</span></td>
+              <td>Monday</td>
+              <td>6:00 -- 7:00 PM</td>
+              <td>Aldenham</td>
+              <td><a href="book.html?session=y1-y3" class="btn btn--primary">Book</a></td>
+            </tr>
+            <tr>
+              <td><span class="tag">Y4 -- Y5</span></td>
+              <td>Monday</td>
+              <td>6:00 -- 7:00 PM</td>
+              <td>Aldenham</td>
+              <td><a href="book.html?session=y4-y5" class="btn btn--primary">Book</a></td>
+            </tr>
+            <tr>
+              <td><span class="tag">Y6 -- Y7</span></td>
+              <td>Monday</td>
+              <td>7:00 -- 8:00 PM</td>
+              <td>Aldenham</td>
+              <td><a href="book.html?session=y6-y7" class="btn btn--primary">Book</a></td>
+            </tr>
+            <tr>
+              <td><span class="tag">Y8</span></td>
+              <td>Monday</td>
+              <td>7:00 -- 8:00 PM</td>
+              <td>Aldenham</td>
+              <td><a href="book.html?session=y8" class="btn btn--primary">Book</a></td>
+            </tr>
+            <tr>
+              <td><span class="tag">Y9 -- Y10</span></td>
+              <td>Monday</td>
+              <td>8:00 -- 9:00 PM</td>
+              <td>Aldenham</td>
+              <td><a href="book.html?session=y9-y10" class="btn btn--primary">Book</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="timetable-cards">
+        <div class="timetable-card">
+          <div class="timetable-card__group">Y1 -- Y3</div>
+          <div class="timetable-card__detail"><span>Day</span><span>Monday</span></div>
+          <div class="timetable-card__detail"><span>Time</span><span>6:00 -- 7:00 PM</span></div>
+          <div class="timetable-card__detail"><span>Location</span><span>Aldenham</span></div>
+          <a href="book.html?session=y1-y3" class="btn btn--primary btn--full">Book This Session</a>
+        </div>
+        <div class="timetable-card">
+          <div class="timetable-card__group">Y4 -- Y5</div>
+          <div class="timetable-card__detail"><span>Day</span><span>Monday</span></div>
+          <div class="timetable-card__detail"><span>Time</span><span>6:00 -- 7:00 PM</span></div>
+          <div class="timetable-card__detail"><span>Location</span><span>Aldenham</span></div>
+          <a href="book.html?session=y4-y5" class="btn btn--primary btn--full">Book This Session</a>
+        </div>
+        <div class="timetable-card">
+          <div class="timetable-card__group">Y6 -- Y7</div>
+          <div class="timetable-card__detail"><span>Day</span><span>Monday</span></div>
+          <div class="timetable-card__detail"><span>Time</span><span>7:00 -- 8:00 PM</span></div>
+          <div class="timetable-card__detail"><span>Location</span><span>Aldenham</span></div>
+          <a href="book.html?session=y6-y7" class="btn btn--primary btn--full">Book This Session</a>
+        </div>
+        <div class="timetable-card">
+          <div class="timetable-card__group">Y8</div>
+          <div class="timetable-card__detail"><span>Day</span><span>Monday</span></div>
+          <div class="timetable-card__detail"><span>Time</span><span>7:00 -- 8:00 PM</span></div>
+          <div class="timetable-card__detail"><span>Location</span><span>Aldenham</span></div>
+          <a href="book.html?session=y8" class="btn btn--primary btn--full">Book This Session</a>
+        </div>
+        <div class="timetable-card">
+          <div class="timetable-card__group">Y9 -- Y10</div>
+          <div class="timetable-card__detail"><span>Day</span><span>Monday</span></div>
+          <div class="timetable-card__detail"><span>Time</span><span>8:00 -- 9:00 PM</span></div>
+          <div class="timetable-card__detail"><span>Location</span><span>Aldenham</span></div>
+          <a href="book.html?session=y9-y10" class="btn btn--primary btn--full">Book This Session</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="section section--grey">
+    <div class="container">
+      <div class="section__header">
+        <h2>What to Know</h2>
+      </div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card__icon">&#9917;</div>
+          <h3>What to Bring</h3>
+          <p class="mt-16">Indoor trainers (no studs), shin pads, water bottle, and comfortable sportswear. We provide the balls and bibs.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card__icon">&#128205;</div>
+          <h3>Location</h3>
+          <p class="mt-16">Sessions are held in Aldenham every Monday evening. Full address details are sent after booking confirmation.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card__icon">&#128100;</div>
+          <h3>All Abilities Welcome</h3>
+          <p class="mt-16">Whether your child is picking up futsal for the first time or already plays competitively, our coaches adapt sessions to every level.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--purple">
+    <div class="container text-center">
+      <h2>Find your session and get started</h2>
+      <p style="color: rgba(255,255,255,0.85); font-size: 1.1rem; margin: 16px auto 32px; max-width: 480px;">Sign up online, pay securely through Stripe, and you're booked in.</p>
+      <a href="book.html" class="btn btn--primary btn--large">Book &amp; Pay Now</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">
+            <img src="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png" alt="North London Hawks logo">
+            <span>North London Hawks Futsal</span>
+          </div>
+          <p>Professional futsal coaching for boys and girls aged 5+. Based in Aldenham, serving families across North London.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <div class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="timetable.html">Timetable</a>
+            <a href="book.html">Book a Session</a>
+            <a href="https://www.northlondonhawks.co.uk" target="_blank" rel="noopener">Main Club Site</a>
+          </div>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <div class="footer__links">
+            <a href="https://www.northlondonhawks.co.uk/contact" target="_blank" rel="noopener">Get in Touch</a>
+            <a href="https://www.northlondonhawks.co.uk" target="_blank" rel="noopener">northlondonhawks.co.uk</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2025 North London Hawks. All rights reserved.</span>
+        <div class="footer__socials">
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="Twitter">X</a>
+          <a href="#" aria-label="LinkedIn">Li</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
