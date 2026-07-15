@@ -4,10 +4,16 @@
 
 const API_BASE = '/api';
 
-// -------------------------------------------------------
-// Mobile Navigation Toggle
-// -------------------------------------------------------
+const SESSION_INFO = {
+  'y1-y3':  { label: 'Y1 - Y3',   time: '6:00 - 7:00 PM' },
+  'y4-y5':  { label: 'Y4 - Y5',   time: '6:00 - 7:00 PM' },
+  'y6-y7':  { label: 'Y6 - Y7',   time: '7:00 - 8:00 PM' },
+  'y8':     { label: 'Y8',        time: '7:00 - 8:00 PM' },
+  'y9-y10': { label: 'Y9 - Y10',  time: '8:00 - 9:00 PM' },
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Mobile nav toggle
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
 
@@ -25,45 +31,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // -------------------------------------------------------
-  // Timetable page: load availability for all sessions
-  // -------------------------------------------------------
-  if (document.getElementById('timetableBody')) {
-    loadTimetableAvailability();
-  }
-
-  // -------------------------------------------------------
-  // Booking page
-  // -------------------------------------------------------
+  // Booking page: pre-select session from URL param
   const sessionSelect = document.getElementById('session');
   if (sessionSelect) {
-    // Handle success/cancel returns from Stripe
     const params = new URLSearchParams(window.location.search);
 
     if (params.get('success') === 'true') {
-      showBookingMessage('success', 'Booking confirmed! Check your email for a confirmation with all the details.');
+      showMessage('success', "Thanks for your enquiry! We've sent you a confirmation email. Our coaches will review your details and be in touch shortly.");
     }
 
-    if (params.get('cancelled') === 'true') {
-      showBookingMessage('cancelled', 'Payment was cancelled. Your spot has not been booked. You can try again below.');
-    }
-
-    // Pre-select session from URL param
     const preselected = params.get('session');
-    if (preselected) {
+    if (preselected && SESSION_INFO[preselected]) {
       sessionSelect.value = preselected;
-      loadSessionAvailability(preselected);
+      updateSummary(preselected);
     }
 
-    // Update sidebar + check availability when session changes
     sessionSelect.addEventListener('change', (e) => {
-      loadSessionAvailability(e.target.value);
+      updateSummary(e.target.value);
     });
   }
 
-  // -------------------------------------------------------
-  // Booking Form Submission
-  // -------------------------------------------------------
+  // Enquiry form submission
   const form = document.getElementById('bookingForm');
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -82,11 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const submitBtn = form.querySelector('button[type="submit"]');
       const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Checking availability...';
+      submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
 
       try {
-        const response = await fetch(`${API_BASE}/create-checkout`, {
+        const response = await fetch(`${API_BASE}/enquire`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -102,25 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
           }),
         });
 
-        const data = await response.json();
-
-        if (response.status === 409) {
-          // Session is full
-          alert(data.message || 'This session is now full.');
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-          return;
-        }
-
         if (!response.ok) {
-          throw new Error(data.error || 'Something went wrong');
+          throw new Error('Submission failed');
         }
 
-        // Redirect to Stripe Checkout
-        window.location.href = data.url;
+        // Redirect to success state
+        window.location.href = `book.html?success=true`;
 
       } catch (error) {
-        console.error('Checkout error:', error);
+        console.error('Enquiry error:', error);
         alert('Something went wrong. Please try again or contact us directly.');
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
@@ -130,100 +108,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// -------------------------------------------------------
-// Load availability for a single session (booking page)
-// -------------------------------------------------------
-async function loadSessionAvailability(sessionKey) {
+function updateSummary(sessionKey) {
   const summarySession = document.getElementById('summarySession');
   const summaryTime = document.getElementById('summaryTime');
-  const summaryPrice = document.getElementById('summaryPrice');
-  const summarySpots = document.getElementById('summarySpots');
-  const submitBtn = document.querySelector('#bookingForm button[type="submit"]');
 
-  if (!sessionKey) {
-    if (summarySession) summarySession.textContent = '--';
-    if (summaryTime) summaryTime.textContent = '--';
-    if (summaryPrice) summaryPrice.textContent = '--';
-    if (summarySpots) summarySpots.textContent = '--';
-    return;
-  }
+  if (!summarySession || !summaryTime) return;
 
-  try {
-    const res = await fetch(`${API_BASE}/check-availability?session=${sessionKey}`);
-    const data = await res.json();
-
-    if (summarySession) summarySession.textContent = data.label;
-    if (summaryTime) summaryTime.textContent = data.time;
-    if (summaryPrice) summaryPrice.textContent = data.price.formatted;
-    if (summarySpots) {
-      if (data.available) {
-        summarySpots.textContent = `${data.spotsLeft} spots left`;
-        summarySpots.style.color = data.spotsLeft <= 3 ? '#e53e3e' : '#38a169';
-      } else {
-        summarySpots.textContent = 'FULL';
-        summarySpots.style.color = '#e53e3e';
-      }
-    }
-
-    if (submitBtn) {
-      submitBtn.disabled = !data.available;
-      submitBtn.textContent = data.available ? `Pay ${data.price.formatted}` : 'Session Full';
-    }
-
-  } catch (err) {
-    console.error('Failed to load availability:', err);
+  if (sessionKey && SESSION_INFO[sessionKey]) {
+    summarySession.textContent = SESSION_INFO[sessionKey].label;
+    summaryTime.textContent = SESSION_INFO[sessionKey].time;
+  } else {
+    summarySession.textContent = '--';
+    summaryTime.textContent = '--';
   }
 }
 
 
-// -------------------------------------------------------
-// Load availability for all sessions (timetable page)
-// -------------------------------------------------------
-async function loadTimetableAvailability() {
-  try {
-    const res = await fetch(`${API_BASE}/check-availability`);
-    const data = await res.json();
-
-    // Update price display
-    const priceDisplay = document.getElementById('currentPrice');
-    if (priceDisplay && data.price) {
-      priceDisplay.textContent = `${data.price.formatted} - ${data.price.label}`;
-    }
-
-    // Update each session row
-    for (const [key, session] of Object.entries(data.sessions)) {
-      const badge = document.getElementById(`avail-${key}`);
-      if (badge) {
-        if (session.available) {
-          badge.textContent = `${session.spotsLeft} spots`;
-          badge.className = 'avail-badge avail-badge--open';
-          if (session.spotsLeft <= 3) {
-            badge.className = 'avail-badge avail-badge--low';
-          }
-        } else {
-          badge.textContent = 'FULL';
-          badge.className = 'avail-badge avail-badge--full';
-        }
-      }
-
-      // Disable book button if full
-      const bookBtn = document.getElementById(`book-${key}`);
-      if (bookBtn && !session.available) {
-        bookBtn.textContent = 'Full';
-        bookBtn.className = 'btn btn--disabled';
-        bookBtn.removeAttribute('href');
-      }
-    }
-  } catch (err) {
-    console.error('Failed to load timetable availability:', err);
-  }
-}
-
-
-// -------------------------------------------------------
-// Show booking status message
-// -------------------------------------------------------
-function showBookingMessage(type, message) {
+function showMessage(type, message) {
   const form = document.getElementById('bookingForm');
   if (!form) return;
 
@@ -234,5 +135,8 @@ function showBookingMessage(type, message) {
 
   if (type === 'success') {
     form.style.display = 'none';
+    // Also hide the sidebar
+    const sidebar = document.querySelector('.booking-sidebar');
+    if (sidebar) sidebar.style.display = 'none';
   }
 }
