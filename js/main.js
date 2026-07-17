@@ -12,6 +12,21 @@ const SESSION_INFO = {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // --- Scroll reveal ---
+  const reveals = document.querySelectorAll('.reveal');
+  if (reveals.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+  }
+
   // --- Mobile nav toggle ---
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
