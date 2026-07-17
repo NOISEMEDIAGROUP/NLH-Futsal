@@ -106,6 +106,69 @@ p + p { margin-top: 1em; }
   background: var(--bg-secondary);
 }
 
+.section--light {
+  background: #f5f5f5;
+  color: var(--bg-primary);
+}
+
+.section--light h2,
+.section--light h3 {
+  color: var(--bg-primary);
+}
+
+.section--light p {
+  color: #444;
+}
+
+.section--light .section__label {
+  color: var(--purple);
+}
+
+.section--light .feature-card {
+  background: var(--white);
+  border-color: #e0e0e0;
+}
+
+.section--light .feature-card p {
+  color: #666;
+}
+
+.section--light .feature-card__icon {
+  background: rgba(123, 47, 190, 0.08);
+  border-color: rgba(123, 47, 190, 0.2);
+}
+
+.section--light .perfect-list__item {
+  background: var(--white);
+  border-color: #e0e0e0;
+  color: var(--bg-primary);
+}
+
+.section--light .perfect-list__icon {
+  background: rgba(123, 47, 190, 0.08);
+}
+
+.section--light .coach-block {
+  border-bottom-color: #e0e0e0;
+}
+
+.section--light .coach-block__bio {
+  color: #555;
+}
+
+.section--light .coach-block__image {
+  border-color: #e0e0e0;
+}
+
+.section--light .contact-section {
+  background: var(--white);
+  border-color: #e0e0e0;
+}
+
+.section--light .contact-section p {
+  color: #666;
+}
+
 .section__header {
   text-align: center;
   margin-bottom: 56px;
