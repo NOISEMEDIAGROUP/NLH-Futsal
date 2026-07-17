@@ -431,7 +431,7 @@ p + p { margin-top: 1em; }
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
-  font-size: 1.4rem;
+  color: var(--purple-light);
 }
 
 .feature-card h3 {
