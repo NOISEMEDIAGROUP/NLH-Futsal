@@ -161,9 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
             parentName: document.getElementById('parentName').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            medical: document.getElementById('medical').value,
-            emailConsent: form.querySelector('input[name="email_consent"]:checked')?.value || 'no',
-            photoConsent: form.querySelector('input[name="photo_consent"]:checked')?.value || 'no',
+            medical: document.getElementById('lookingFor')?.value || '',
+            emailConsent: 'no',
+            photoConsent: 'no',
           }),
         });
 
