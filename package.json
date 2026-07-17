@@ -2,10 +2,9 @@
   "name": "hawks-futsal",
   "version": "1.0.0",
   "private": true,
-  "description": "North London Hawks Futsal Academy - booking site with Stripe payments",
+  "description": "Hawks Futsal - session enquiry site",
   "dependencies": {
     "@supabase/supabase-js": "^2.110.6",
-    "resend": "^3.0.0",
-    "stripe": "^14.0.0"
+    "resend": "^3.0.0"
   }
 }

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sessions - Hawks Futsal</title>
+  <meta name="description" content="Weekly futsal sessions for ages 5-16. Foundation, Development, and Performance tiers. Enquire to book your spot.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="index.html" class="nav__logo">
+        <img src="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png" alt="Hawks Futsal logo">
+        <span>Hawks Futsal</span>
+      </a>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="coaches.html">Coaches</a>
+        <a href="sessions.html" class="active">Sessions</a>
+        <a href="#" class="nav__cta" id="enquireNavBtn">Enquire</a>
+      </div>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <span class="section__label">Book Your Spot</span>
+      <h1>Weekly Futsal Sessions</h1>
+      <p>Three tiers designed for different ages and abilities. Find the right fit and send us an enquiry.</p>
+    </div>
+  </section>
+
+  <!-- Sessions -->
+  <section class="section">
+    <div class="container">
+      <div class="sessions-grid">
+
+        <!-- Foundation -->
+        <div class="session-card">
+          <div class="session-card__info">
+            <div class="session-card__tier">Foundation</div>
+            <div class="session-card__desc">Introduction to futsal. Building confidence, coordination, and core skills in a fun, supportive environment.</div>
+            <div class="session-card__details">
+              <div class="session-card__detail">
+                <strong>Ages</strong>
+                5 - 7
+              </div>
+              <div class="session-card__detail">
+                <strong>Day &amp; Time</strong>
+                Saturdays, 9:00 - 10:00 AM
+              </div>
+              <div class="session-card__detail">
+                <strong>Price</strong>
+                &pound;8 / session
+              </div>
+            </div>
+          </div>
+          <div class="session-card__actions">
+            <button class="btn btn--primary" data-session="foundation">Enquire</button>
+          </div>
+        </div>
+
+        <!-- Development -->
+        <div class="session-card">
+          <div class="session-card__info">
+            <div class="session-card__tier">Development</div>
+            <div class="session-card__desc">Structured coaching focused on technique, decision-making, and game understanding for developing players.</div>
+            <div class="session-card__details">
+              <div class="session-card__detail">
+                <strong>Ages</strong>
+                8 - 11
+              </div>
+              <div class="session-card__detail">
+                <strong>Day &amp; Time</strong>
+                Saturdays, 10:00 - 11:00 AM
+              </div>
+              <div class="session-card__detail">
+                <strong>Price</strong>
+                &pound;10 / session
+              </div>
+            </div>
+          </div>
+          <div class="session-card__actions">
+            <button class="btn btn--primary" data-session="development">Enquire</button>
+          </div>
+        </div>
+
+        <!-- Performance -->
+        <div class="session-card">
+          <div class="session-card__info">
+            <div class="session-card__tier">Performance</div>
+            <div class="session-card__desc">High-intensity, competitive sessions for experienced players. Tactical work, advanced skills, and match play.</div>
+            <div class="session-card__details">
+              <div class="session-card__detail">
+                <strong>Ages</strong>
+                12 - 16
+              </div>
+              <div class="session-card__detail">
+                <strong>Day &amp; Time</strong>
+                Saturdays, 11:00 AM - 12:30 PM
+              </div>
+              <div class="session-card__detail">
+                <strong>Price</strong>
+                &pound;12 / session
+              </div>
+            </div>
+          </div>
+          <div class="session-card__actions">
+            <button class="btn btn--primary" data-session="performance">Enquire</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contact -->
+      <div class="contact-section">
+        <h3>Can't find the right session?</h3>
+        <p>If your child doesn't fit neatly into one of the tiers above, get in touch and we'll help you find the best option.</p>
+        <button class="btn btn--primary" id="generalEnquireBtn">Get in Touch</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Enquiry Modal -->
+  <div class="modal-overlay" id="enquiryModal">
+    <div class="modal">
+      <div class="modal__header">
+        <h3>Enquire</h3>
+        <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__session-info" id="modalSessionInfo">
+        <span class="modal__session-name" id="modalSessionName"></span>
+        <span class="modal__session-detail" id="modalSessionDetail"></span>
+      </div>
+      <div class="modal__body">
+        <form id="enquiryForm" novalidate>
+
+          <div class="form__group">
+            <label class="form__label" for="playerName">Player's Name <span class="required">*</span></label>
+            <input type="text" class="form__input" id="playerName" name="player_name" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="playerDob">Date of Birth <span class="required">*</span></label>
+            <input type="date" class="form__input" id="playerDob" name="player_dob" required>
+          </div>
+
+          <hr class="form__divider">
+
+          <div class="form__group">
+            <label class="form__label" for="parentName">Parent / Guardian Name <span class="required">*</span></label>
+            <input type="text" class="form__input" id="parentName" name="parent_name" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="email">Email <span class="required">*</span></label>
+            <input type="email" class="form__input" id="email" name="email" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="phone">Phone <span class="required">*</span></label>
+            <input type="tel" class="form__input" id="phone" name="phone" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="medical">Medical Information</label>
+            <textarea class="form__textarea" id="medical" name="medical" placeholder="Any allergies, conditions, or information the coaches should know."></textarea>
+          </div>
+
+          <hr class="form__divider">
+
+          <div class="form__group">
+            <label class="form__label">Email updates about sessions and events? <span class="required">*</span></label>
+            <div class="form__radio-group">
+              <label class="form__radio">
+                <input type="radio" name="email_consent" value="yes" required> Yes
+              </label>
+              <label class="form__radio">
+                <input type="radio" name="email_consent" value="no"> No
+              </label>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">Photo / video consent for social media? <span class="required">*</span></label>
+            <div class="form__radio-group">
+              <label class="form__radio">
+                <input type="radio" name="photo_consent" value="yes" required> Yes
+              </label>
+              <label class="form__radio">
+                <input type="radio" name="photo_consent" value="no"> No
+              </label>
+            </div>
+          </div>
+
+          <input type="hidden" id="sessionKey" name="session" value="">
+
+          <button type="submit" class="btn btn--primary btn--large btn--full mt-24">
+            Send Enquiry
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">
+            <img src="https://static.wixstatic.com/media/4e0520_af8083b8e3c040d8a10c5631c40c297c~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png" alt="Hawks Futsal logo">
+            <span>Hawks Futsal</span>
+          </div>
+          <p>Professional futsal coaching for young footballers. Developing technical ability, game intelligence, and a love for the game.</p>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <div class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="coaches.html">Coaches</a>
+            <a href="sessions.html">Sessions</a>
+          </div>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <div class="footer__links">
+            <a href="sessions.html">Enquire About a Session</a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Hawks Futsal. All rights reserved.</span>
+        <div class="footer__socials">
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

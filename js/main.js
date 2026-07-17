@@ -5,15 +5,14 @@
 const API_BASE = '/api';
 
 const SESSION_INFO = {
-  'y1-y3':  { label: 'Y1 - Y3',   time: '6:00 - 7:00 PM' },
-  'y4-y5':  { label: 'Y4 - Y5',   time: '6:00 - 7:00 PM' },
-  'y6-y7':  { label: 'Y6 - Y7',   time: '7:00 - 8:00 PM' },
-  'y8':     { label: 'Y8',        time: '7:00 - 8:00 PM' },
-  'y9-y10': { label: 'Y9 - Y10',  time: '8:00 - 9:00 PM' },
+  'foundation':  { label: 'Foundation',  time: 'Saturdays, 9:00 - 10:00 AM',   ages: '5 - 7',   price: '\u00a38 / session' },
+  'development': { label: 'Development', time: 'Saturdays, 10:00 - 11:00 AM',  ages: '8 - 11',  price: '\u00a310 / session' },
+  'performance': { label: 'Performance', time: 'Saturdays, 11:00 AM - 12:30 PM', ages: '12 - 16', price: '\u00a312 / session' },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Mobile nav toggle
+
+  // --- Mobile nav toggle ---
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
 
@@ -31,28 +30,91 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Booking page: pre-select session from URL param
-  const sessionSelect = document.getElementById('session');
-  if (sessionSelect) {
+  // --- Enquiry modal ---
+  const modal = document.getElementById('enquiryModal');
+  const modalClose = document.getElementById('modalClose');
+  const sessionKeyInput = document.getElementById('sessionKey');
+  const modalSessionName = document.getElementById('modalSessionName');
+  const modalSessionDetail = document.getElementById('modalSessionDetail');
+  const modalSessionInfo = document.getElementById('modalSessionInfo');
+
+  function openModal(sessionKey) {
+    if (!modal) return;
+
+    if (sessionKey && SESSION_INFO[sessionKey]) {
+      const info = SESSION_INFO[sessionKey];
+      sessionKeyInput.value = sessionKey;
+      modalSessionName.textContent = info.label;
+      modalSessionDetail.textContent = info.time + '  |  Ages ' + info.ages;
+      modalSessionInfo.style.display = 'flex';
+    } else {
+      sessionKeyInput.value = '';
+      modalSessionInfo.style.display = 'none';
+    }
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Session card enquire buttons
+  document.querySelectorAll('[data-session]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openModal(btn.dataset.session);
+    });
+  });
+
+  // General enquire button
+  const generalBtn = document.getElementById('generalEnquireBtn');
+  if (generalBtn) {
+    generalBtn.addEventListener('click', () => openModal(null));
+  }
+
+  // Nav enquire button on sessions page
+  const enquireNavBtn = document.getElementById('enquireNavBtn');
+  if (enquireNavBtn) {
+    enquireNavBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(null);
+    });
+  }
+
+  // Close modal
+  if (modalClose) {
+    modalClose.addEventListener('click', closeModal);
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Open modal from URL param (e.g. ?session=foundation)
+  if (modal) {
     const params = new URLSearchParams(window.location.search);
 
     if (params.get('success') === 'true') {
-      showMessage('success', "Thanks for your enquiry! We've sent you a confirmation email. Our coaches will review your details and be in touch shortly.");
+      showSuccessMessage();
     }
 
     const preselected = params.get('session');
     if (preselected && SESSION_INFO[preselected]) {
-      sessionSelect.value = preselected;
-      updateSummary(preselected);
+      openModal(preselected);
     }
-
-    sessionSelect.addEventListener('change', (e) => {
-      updateSummary(e.target.value);
-    });
   }
 
-  // Enquiry form submission
-  const form = document.getElementById('bookingForm');
+  // --- Enquiry form submission ---
+  const form = document.getElementById('enquiryForm');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -62,9 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const session = document.getElementById('session').value;
+      const session = sessionKeyInput.value;
       if (!session) {
-        alert('Please select a session.');
+        alert('Please select a session before submitting.');
         return;
       }
 
@@ -74,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = true;
 
       try {
-        const response = await fetch(`${API_BASE}/enquire`, {
+        const response = await fetch(API_BASE + '/enquire', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -85,8 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
             medical: document.getElementById('medical').value,
-            emailConsent: document.querySelector('input[name="email_consent"]:checked')?.value || 'no',
-            photoConsent: document.querySelector('input[name="photo_consent"]:checked')?.value || 'no',
+            emailConsent: form.querySelector('input[name="email_consent"]:checked')?.value || 'no',
+            photoConsent: form.querySelector('input[name="photo_consent"]:checked')?.value || 'no',
           }),
         });
 
@@ -94,8 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
           throw new Error('Submission failed');
         }
 
-        // Redirect to success state
-        window.location.href = `book.html?success=true`;
+        closeModal();
+        window.location.href = 'sessions.html?success=true';
 
       } catch (error) {
         console.error('Enquiry error:', error);
@@ -108,35 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function updateSummary(sessionKey) {
-  const summarySession = document.getElementById('summarySession');
-  const summaryTime = document.getElementById('summaryTime');
-
-  if (!summarySession || !summaryTime) return;
-
-  if (sessionKey && SESSION_INFO[sessionKey]) {
-    summarySession.textContent = SESSION_INFO[sessionKey].label;
-    summaryTime.textContent = SESSION_INFO[sessionKey].time;
-  } else {
-    summarySession.textContent = '--';
-    summaryTime.textContent = '--';
-  }
-}
-
-
-function showMessage(type, message) {
-  const form = document.getElementById('bookingForm');
-  if (!form) return;
+function showSuccessMessage() {
+  const sessionsGrid = document.querySelector('.sessions-grid');
+  if (!sessionsGrid) return;
 
   const banner = document.createElement('div');
-  banner.className = `booking-banner booking-banner--${type}`;
-  banner.innerHTML = `<p>${message}</p>`;
-  form.parentNode.insertBefore(banner, form);
-
-  if (type === 'success') {
-    form.style.display = 'none';
-    // Also hide the sidebar
-    const sidebar = document.querySelector('.booking-sidebar');
-    if (sidebar) sidebar.style.display = 'none';
-  }
+  banner.className = 'booking-banner booking-banner--success';
+  banner.innerHTML = '<p>Thanks for your enquiry! Our coaches will review your details and be in touch shortly.</p>';
+  sessionsGrid.parentNode.insertBefore(banner, sessionsGrid);
 }
