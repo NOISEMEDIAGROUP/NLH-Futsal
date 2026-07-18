@@ -1039,6 +1039,10 @@ p + p { margin-top: 1em; }
   margin: 24px 0;
 }
 
+.session-only.hidden {
+  display: none;
+}
+
 /* --- Footer --- */
 .footer {
   background: var(--bg-secondary);

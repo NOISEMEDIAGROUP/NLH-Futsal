@@ -56,15 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
   function openModal(sessionKey) {
     if (!modal) return;
 
+    const sessionOnlyFields = modal.querySelectorAll('.session-only');
+
     if (sessionKey && SESSION_INFO[sessionKey]) {
       const info = SESSION_INFO[sessionKey];
       sessionKeyInput.value = sessionKey;
       modalSessionName.textContent = info.label;
       modalSessionDetail.textContent = info.time + '  |  Ages ' + info.ages;
       modalSessionInfo.style.display = 'flex';
+      sessionOnlyFields.forEach(el => el.classList.remove('hidden'));
     } else {
       sessionKeyInput.value = '';
       modalSessionInfo.style.display = 'none';
+      sessionOnlyFields.forEach(el => el.classList.add('hidden'));
     }
 
     modal.classList.add('open');
