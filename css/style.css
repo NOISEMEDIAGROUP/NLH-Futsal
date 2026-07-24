@@ -1042,6 +1042,23 @@ p + p { margin-top: 1em; }
   height: 18px;
 }
 
+.form__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.form__checkbox input[type="checkbox"] {
+  accent-color: var(--purple);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
 .form__divider {
   border: none;
   border-top: 1px solid var(--border);

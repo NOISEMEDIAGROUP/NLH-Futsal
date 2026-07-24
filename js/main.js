@@ -165,9 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
             parentName: document.getElementById('parentName').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            medical: document.getElementById('lookingFor')?.value || '',
+            medical: '',
             emailConsent: 'no',
-            photoConsent: 'no',
+            photoConsent: document.getElementById('photoConsent')?.checked ? 'yes' : 'no',
           }),
         });
 
