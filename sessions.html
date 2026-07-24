@@ -177,10 +177,32 @@
           </div>
 
           <div class="form__group">
-            <label class="form__checkbox" for="photoConsent">
-              <input type="checkbox" id="photoConsent" name="photo_consent" value="yes">
-              <span>I'm happy for photos and videos to be used by the club on social media, the website, or promotional material.</span>
-            </label>
+            <label class="form__label" for="medical">Medical information we need to be aware of <span class="required">*</span></label>
+            <textarea class="form__textarea" id="medical" name="medical" placeholder="Any allergies, conditions, or information the coaches should know about. If none, write 'None'." required></textarea>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">Would you like to receive emails about our sports programmes? <span class="required">*</span></label>
+            <div class="form__radio-group">
+              <label class="form__radio">
+                <input type="radio" name="email_consent" value="yes" required> Yes
+              </label>
+              <label class="form__radio">
+                <input type="radio" name="email_consent" value="no"> No
+              </label>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">I give permission for photographs and videos of my child to be used by the club on either social media, the club's website or promotional material <span class="required">*</span></label>
+            <div class="form__radio-group">
+              <label class="form__radio">
+                <input type="radio" name="photo_consent" value="yes" required> Yes
+              </label>
+              <label class="form__radio">
+                <input type="radio" name="photo_consent" value="no"> No
+              </label>
+            </div>
           </div>
 
           <input type="hidden" id="sessionKey" name="session" value="">
